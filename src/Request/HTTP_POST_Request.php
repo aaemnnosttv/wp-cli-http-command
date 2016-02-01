@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_HTTP_Command;
+namespace WP_HTTP_Command\Request;
 
 class HTTP_POST_Request extends HTTP_Request
 {
