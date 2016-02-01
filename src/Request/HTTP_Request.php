@@ -19,7 +19,8 @@ abstract class HTTP_Request
     ];
 
     protected $defaults = [
-        'redirection' => 0
+        'redirection' => 0,
+        'timeout'     => 60,
     ];
 
     public function __construct(WP_HTTP $http, $uri, AssocArgs $args)
