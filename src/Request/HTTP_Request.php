@@ -120,7 +120,8 @@ abstract class HTTP_Request
     protected function get_http_args()
     {
         $args = [
-            'method'=> static::METHOD
+            'method'    => static::METHOD,
+            'sslverify' => $this->get_flag('ssl-verify', true),
         ];
 
         if ($this->is_domestic_realm() && $this->args->as) {
@@ -240,5 +241,10 @@ abstract class HTTP_Request
     protected function make_cookie($name, $value, $expire, $path, $domain)
     {
         return new WP_Http_Cookie(compact('name', 'value', 'expire', 'path', 'domain'));
+    }
+
+    protected function get_flag($flag, $default = null)
+    {
+        return \WP_CLI\Utils\get_flag_value($this->args->args, 'ssl-verify', true);
     }
 }

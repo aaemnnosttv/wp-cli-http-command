@@ -33,7 +33,7 @@ class HTTP_Command extends \WP_CLI_Command
      * [--format=<table|json|csv>]
      * : Output format for headers. Default: table
      *
-     * @synopsis <uri> [--realm=<home|admin>] [--as=<user>] [--scheme=<scheme>] [--status] [--format=<table|json|csv>]
+     * @synopsis <uri> [--realm=<home|admin>] [--as=<user>] [--scheme=<scheme>] [--status] [--format=<table|json|csv>] [--ssl-verify]
      */
     public function head($_, $assoc)
     {
@@ -60,7 +60,7 @@ class HTTP_Command extends \WP_CLI_Command
      * [--status]
      * : Only return the HTTP status code
      *
-     * @synopsis <uri> [--realm=<home|admin>] [--as=<user>] [--scheme=<scheme>] [--status]
+     * @synopsis <uri> [--realm=<home|admin>] [--as=<user>] [--scheme=<scheme>] [--status] [--ssl-verify]
      */
     public function get($_, $assoc)
     {
@@ -91,7 +91,7 @@ class HTTP_Command extends \WP_CLI_Command
      * : Only return the HTTP status code
      *
      *
-     * @synopsis <uri> [--payload=<data>] [--realm=<home|admin>] [--as=<user>] [--scheme=<scheme>] [--status]
+     * @synopsis <uri> [--payload=<data>] [--realm=<home|admin>] [--as=<user>] [--scheme=<scheme>] [--status] [--ssl-verify]
      */
     public function post($_, $assoc)
     {
