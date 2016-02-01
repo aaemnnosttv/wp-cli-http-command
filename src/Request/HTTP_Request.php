@@ -104,6 +104,14 @@ abstract class HTTP_Request
         return set_url_scheme($uri, $this->args->scheme);
     }
 
+    protected function is_https()
+    {
+        return in_array('https', [
+            $this->args->scheme,
+            parse_url($this->get_url(), PHP_URL_SCHEME)
+        ]);
+    }
+
     protected function dispatch($url)
     {
         return $this->http->request($url, $this->get_http_args());
@@ -117,7 +125,7 @@ abstract class HTTP_Request
 
         if ($this->is_domestic_realm() && $this->args->as) {
             $user_id = $this->get_user_id($this->args->as);
-            $args['cookies'] = $this->make_auth_cookies($user_id);
+            $args['cookies'] = $this->make_auth_cookies($user_id, false, $this->is_https() ?: '');
         }
 
         return array_merge($this->defaults, $args);
