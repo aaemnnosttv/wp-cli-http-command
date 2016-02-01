@@ -1,20 +1,21 @@
 <?php
 
-namespace WP_HTTP_Command;
+namespace WP_HTTP_Command\Request;
 
 use WP_CLI;
 use WP_HTTP;
 use WP_Http_Cookie;
 use WP_Session_Tokens;
+use WP_HTTP_Command\AssocArgs;
 
 abstract class HTTP_Request
 {
     const METHOD = 'GET';
 
     protected static $classes = [
-        'head' => Request\HTTP_HEAD_Request::class,
-        'get'  => Request\HTTP_GET_Request::class,
-        'post' => Request\HTTP_POST_Request::class,
+        'head' => HTTP_HEAD_Request::class,
+        'get'  => HTTP_GET_Request::class,
+        'post' => HTTP_POST_Request::class,
     ];
 
     protected $defaults = [

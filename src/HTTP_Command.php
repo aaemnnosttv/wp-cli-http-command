@@ -2,6 +2,8 @@
 
 namespace WP_HTTP_Command;
 
+use WP_HTTP_Command\Request\HTTP_Request;
+
 /**
  * Perform an HTTP request using the WP HTTP API
  */
