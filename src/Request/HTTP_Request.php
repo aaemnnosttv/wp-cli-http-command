@@ -63,9 +63,14 @@ abstract class HTTP_Request
         $this->output_response_status($response);
     }
 
-    protected function format_output(array $reponse)
+    /**
+     * @param array $response
+     *
+     * @return null
+     */
+    protected function format_output(array $response)
     {
-        return null;
+        return @$response[ 'body' ];
     }
 
     protected function output_response_status(array $response)

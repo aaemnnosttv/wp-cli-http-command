@@ -14,9 +14,4 @@ class HTTP_POST_Request extends HTTP_Request
 
         return $args;
     }
-
-    protected function format_output(array $response)
-    {
-        return $response['body'];
-    }
 }
