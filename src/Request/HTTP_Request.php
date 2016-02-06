@@ -8,21 +8,43 @@ use WP_Http_Cookie;
 use WP_Session_Tokens;
 use WP_HTTP_Command\AssocArgs;
 
+/**
+ * Class HTTP_Request
+ * @package WP_HTTP_Command\Request
+ */
 abstract class HTTP_Request
 {
+    /**
+     * The HTTP request method
+     */
     const METHOD = 'GET';
 
+    /**
+     * @var array
+     */
     protected static $classes = [
         'head' => HTTP_HEAD_Request::class,
         'get'  => HTTP_GET_Request::class,
         'post' => HTTP_POST_Request::class,
     ];
 
+    /**
+     * HTTP request defaults
+     * @see \WP_HTTP
+     * @var array
+     */
     protected $defaults = [
         'redirection' => 0,
         'timeout'     => 60,
     ];
 
+    /**
+     * HTTP_Request constructor.
+     *
+     * @param WP_HTTP   $http
+     * @param           $uri
+     * @param AssocArgs $args
+     */
     public function __construct(WP_HTTP $http, $uri, AssocArgs $args)
     {
         $this->http = $http;
@@ -30,6 +52,14 @@ abstract class HTTP_Request
         $this->args = $args;
     }
 
+
+    /**
+     * @param       $method
+     * @param       $uri
+     * @param array $args
+     *
+     * @return mixed
+     */
     public static function make($method, $uri, array $args)
     {
         $class = static::get_class(strtolower($method));
@@ -37,15 +67,25 @@ abstract class HTTP_Request
         return new $class(new WP_Http, $uri, new AssocArgs($args));
     }
 
+    /**
+     * Get the corresponding class for the given request method
+     *
+     * @param $method
+     *
+     * @return null|string   Class name
+     */
     public static function get_class($method)
     {
-        if (! isset(static::$classes[ $method ])) {
+        if ( ! isset(static::$classes[$method])) {
             return null;
         }
 
-        return static::$classes[ $method ];
+        return static::$classes[$method];
     }
 
+    /**
+     * Dispatch the request and display the output
+     */
     public function output()
     {
         $response = $this->dispatch($this->url());
@@ -66,18 +106,20 @@ abstract class HTTP_Request
     }
 
     /**
+     * Format the output for the response
+     *
      * @param array $response
      *
-     * @return null
+     * @return string
      */
     protected function format_output(array $response)
     {
-        return @$response[ 'body' ];
+        return @$response['body'];
     }
 
     /**
      * Output the HTTP status code from the response
-     * 
+     *
      * @param array $response
      */
     protected function output_response_status(array $response)
@@ -139,11 +181,19 @@ abstract class HTTP_Request
         return (bool)'https' === parse_url($this->uri, PHP_URL_SCHEME);
     }
 
+    /**
+     * @param $url
+     *
+     * @return mixed
+     */
     protected function dispatch($url)
     {
         return $this->http->request($url, $this->get_http_args());
     }
 
+    /**
+     * @return array
+     */
     protected function get_http_args()
     {
         $args = [
@@ -159,19 +209,29 @@ abstract class HTTP_Request
         return array_merge($this->defaults, $args);
     }
 
+    /**
+     * Is this a request for the current site?
+     *
+     * @return bool
+     */
     protected function is_domestic_realm()
     {
         return in_array($this->args->realm, ['home', 'admin']);
     }
 
+    /**
+     * @param int $user
+     *
+     * @return int
+     */
     protected function get_user_id($user = 0)
     {
-        if (! $user) {
+        if ( ! $user) {
             return 0;
         }
 
         if (is_numeric($user)) {
-            return (int) $user;
+            return (int)$user;
         }
 
         foreach (['login', 'email', 'slug'] as $field) {
@@ -257,6 +317,15 @@ abstract class HTTP_Request
         return $cookies;
     }
 
+    /**
+     * @param $name
+     * @param $value
+     * @param $expire
+     * @param $path
+     * @param $domain
+     *
+     * @return WP_Http_Cookie
+     */
     protected function make_cookie($name, $value, $expire, $path, $domain)
     {
         return new WP_Http_Cookie(compact('name', 'value', 'expire', 'path', 'domain'));
@@ -264,7 +333,7 @@ abstract class HTTP_Request
 
     /**
      * Get flag value
-     * 
+     *
      * @param      $flag
      * @param null $default
      *
