@@ -118,12 +118,18 @@ abstract class HTTP_Request
         return set_url_scheme($uri, $this->args->scheme);
     }
 
+    /**
+     * Is the request for a secure URL?
+     *
+     * @return bool
+     */
     protected function is_https()
     {
-        return in_array('https', [
-            $this->args->scheme,
-            parse_url($this->get_url(), PHP_URL_SCHEME)
-        ]);
+        if ('https' === $this->args->scheme) {
+            return true;
+        }
+
+        return (bool)'https' === parse_url($this->uri, PHP_URL_SCHEME);
     }
 
     protected function dispatch($url)
