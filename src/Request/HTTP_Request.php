@@ -248,8 +248,16 @@ abstract class HTTP_Request
         return new WP_Http_Cookie(compact('name', 'value', 'expire', 'path', 'domain'));
     }
 
+    /**
+     * Get flag value
+     * 
+     * @param      $flag
+     * @param null $default
+     *
+     * @return mixed
+     */
     protected function get_flag($flag, $default = null)
     {
-        return \WP_CLI\Utils\get_flag_value($this->args->args, 'ssl-verify', true);
+        return \WP_CLI\Utils\get_flag_value($this->args->args, $flag, $default);
     }
 }
