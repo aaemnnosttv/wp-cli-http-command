@@ -48,7 +48,7 @@ abstract class HTTP_Request
 
     public function output()
     {
-        $response = $this->dispatch($this->get_url());
+        $response = $this->dispatch($this->url());
 
         if (is_wp_error($response)) {
             WP_CLI::error($response->get_error_message());
@@ -95,17 +95,24 @@ abstract class HTTP_Request
         \WP_CLI::$method("$http_code $message");
     }
 
-    protected function get_url()
+    /**
+     * Get the full URL for the request
+     *
+     * @return mixed
+     */
+    protected function url()
     {
         $uri = $this->uri;
 
         switch ($this->args->realm) {
-            case 'home': return home_url($uri, $this->args->scheme);
-            case 'admin': return admin_url($uri, $this->args->scheme);
+            case 'home':
+                return home_url($uri, $this->args->scheme);
+            case 'admin':
+                return admin_url($uri, $this->args->scheme);
         }
 
-        if (! parse_url($uri, PHP_URL_SCHEME)) {
-            $uri = "http://$uri";
+        if ( ! parse_url($uri, PHP_URL_SCHEME)) {
+            return "http://$uri";
         }
 
         return set_url_scheme($uri, $this->args->scheme);
