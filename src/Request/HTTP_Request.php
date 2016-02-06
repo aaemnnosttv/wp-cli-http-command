@@ -75,21 +75,28 @@ abstract class HTTP_Request
         return @$response[ 'body' ];
     }
 
+    /**
+     * Output the HTTP status code from the response
+     * 
+     * @param array $response
+     */
     protected function output_response_status(array $response)
     {
-        $method = 'success';
-
         $http_code = $response['response']['code'];
         $message   = $response['response']['message'];
+        $method    = 'line';
 
         if (500 <= $http_code) {
             $method = 'error';
         }
-        if (300 <= $http_code) {
+        if (400 <= $http_code) {
             $method = 'warning';
         }
         if (300 <= $http_code && $http_code < 400) {
-            $message .= ' | Location: ' . $response['headers']['location'];
+            $message .= "\n" . 'Location: ' . $response['headers']['location'];
+        }
+        if (200 <= $http_code && $http_code < 300) {
+            $method = 'success';
         }
 
         \WP_CLI::$method("$http_code $message");
