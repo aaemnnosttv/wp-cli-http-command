@@ -52,15 +52,17 @@ abstract class HTTP_Request
 
         if (is_wp_error($response)) {
             WP_CLI::error($response->get_error_message());
+
             return;
         }
 
-        if (! $this->args->status && $this->format_output($response)) {
-            echo $this->format_output($response);
+        if ($this->args->status) {
+            $this->output_response_status($response);
+
             return;
         }
 
-        $this->output_response_status($response);
+        echo $this->format_output($response);
     }
 
     /**
