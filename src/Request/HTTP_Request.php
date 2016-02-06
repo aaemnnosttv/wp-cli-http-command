@@ -130,8 +130,8 @@ abstract class HTTP_Request
         ];
 
         if ($this->is_domestic_realm() && $this->args->as) {
-            $user_id = $this->get_user_id($this->args->as);
-            $args['cookies'] = $this->make_auth_cookies($user_id, false, $this->is_https() ?: '');
+            $user_id         = $this->get_user_id($this->args->as);
+            $args['cookies'] = $this->make_auth_cookies($user_id);
         }
 
         return array_merge($this->defaults, $args);
@@ -161,34 +161,21 @@ abstract class HTTP_Request
         return 0;
     }
 
-    protected function make_auth_cookies($user_id, $remember = false, $secure = '', $token = '')
+    /**
+     * Generate auth and login cookies for the given user
+     *
+     * @param        $user_id
+     *
+     * @return array
+     */
+    protected function make_auth_cookies($user_id)
     {
-        if ($remember) {
-            /**
-             * Filter the duration of the authentication cookie expiration period.
-             *
-             * @since 2.8.0
-             *
-             * @param int  $length   Duration of the expiration period in seconds.
-             * @param int  $user_id  User ID.
-             * @param bool $remember Whether to remember the user login. Default false.
-             */
-            $expiration = time() + apply_filters('auth_cookie_expiration', 14 * DAY_IN_SECONDS, $user_id, $remember);
-
-            /*
-             * Ensure the browser will continue to send the cookie after the expiration time is reached.
-             * Needed for the login grace period in wp_validate_auth_cookie().
-             */
-            $expire = $expiration + (12 * HOUR_IN_SECONDS);
-        } else {
-            /** This filter is documented in wp-includes/pluggable.php */
-            $expiration = time() + apply_filters('auth_cookie_expiration', 2 * DAY_IN_SECONDS, $user_id, $remember);
-            $expire = 0;
-        }
-
-        if ('' === $secure) {
-            $secure = is_ssl();
-        }
+        $token    = '';
+        $remember = '';
+        $secure   = $this->is_https();
+        /** This filter is documented in wp-includes/pluggable.php */
+        $expiration = time() + apply_filters('auth_cookie_expiration', 2 * DAY_IN_SECONDS, $user_id, $remember);
+        $expire     = 0;
 
         // Frontend cookie is secure when the auth cookie is secure and the site's home URL is forced HTTPS.
         $secure_logged_in_cookie = $secure && 'https' === parse_url(get_option('home'), PHP_URL_SCHEME);
@@ -212,14 +199,15 @@ abstract class HTTP_Request
          * @param int  $user_id                 User ID.
          * @param bool $secure                  Whether the connection is secure.
          */
-        $secure_logged_in_cookie = apply_filters('secure_logged_in_cookie', $secure_logged_in_cookie, $user_id, $secure);
+        $secure_logged_in_cookie = apply_filters('secure_logged_in_cookie', $secure_logged_in_cookie, $user_id,
+            $secure);
 
         if ($secure) {
             $auth_cookie_name = SECURE_AUTH_COOKIE;
-            $scheme = 'secure_auth';
+            $scheme           = 'secure_auth';
         } else {
             $auth_cookie_name = AUTH_COOKIE;
-            $scheme = 'auth';
+            $scheme           = 'auth';
         }
 
         if ('' === $token) {
@@ -227,17 +215,21 @@ abstract class HTTP_Request
             $token   = $manager->create($expiration);
         }
 
-        $auth_cookie = wp_generate_auth_cookie($user_id, $expiration, $scheme, $token);
+        $auth_cookie      = wp_generate_auth_cookie($user_id, $expiration, $scheme, $token);
         $logged_in_cookie = wp_generate_auth_cookie($user_id, $expiration, 'logged_in', $token);
 
         $cookies = [
-            $this->make_cookie($auth_cookie_name, $auth_cookie, $expire, PLUGINS_COOKIE_PATH, COOKIE_DOMAIN, $secure, true),
-            $this->make_cookie($auth_cookie_name, $auth_cookie, $expire, ADMIN_COOKIE_PATH, COOKIE_DOMAIN, $secure, true),
-            $this->make_cookie(LOGGED_IN_COOKIE, $logged_in_cookie, $expire, COOKIEPATH, COOKIE_DOMAIN, $secure_logged_in_cookie, true),
+            $this->make_cookie($auth_cookie_name, $auth_cookie, $expire, PLUGINS_COOKIE_PATH, COOKIE_DOMAIN, $secure,
+                true),
+            $this->make_cookie($auth_cookie_name, $auth_cookie, $expire, ADMIN_COOKIE_PATH, COOKIE_DOMAIN, $secure,
+                true),
+            $this->make_cookie(LOGGED_IN_COOKIE, $logged_in_cookie, $expire, COOKIEPATH, COOKIE_DOMAIN,
+                $secure_logged_in_cookie, true),
         ];
 
         if (COOKIEPATH != SITECOOKIEPATH) {
-            $cookies[] = $this->make_cookie(LOGGED_IN_COOKIE, $logged_in_cookie, $expire, SITECOOKIEPATH, COOKIE_DOMAIN, $secure_logged_in_cookie, true);
+            $cookies[] = $this->make_cookie(LOGGED_IN_COOKIE, $logged_in_cookie, $expire, SITECOOKIEPATH, COOKIE_DOMAIN,
+                $secure_logged_in_cookie, true);
         }
 
         return $cookies;
