@@ -91,9 +91,7 @@ abstract class HTTP_Request
         $response = $this->dispatch($this->url());
 
         if (is_wp_error($response)) {
-            WP_CLI::error($response->get_error_message());
-
-            return;
+            WP_CLI::error($response);
         }
 
         if ($this->args->status) {
