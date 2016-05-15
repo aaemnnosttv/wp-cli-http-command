@@ -161,7 +161,7 @@ abstract class HTTP_Request
             case 'home':
                 return home_url($uri, $this->args->scheme);
             case 'admin':
-                return admin_url($uri, $this->args->scheme);
+                return admin_url($uri, $this->args->scheme ?: 'admin');
         }
 
         if (! parse_url($uri, PHP_URL_SCHEME)) {
