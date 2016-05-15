@@ -141,7 +141,7 @@ abstract class HTTP_Request
             $method = 'success';
         }
 
-        \WP_CLI::$method("$http_code $message");
+        WP_CLI::$method("$http_code $message");
     }
 
     /**
