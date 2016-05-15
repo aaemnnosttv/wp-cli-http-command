@@ -151,6 +151,12 @@ abstract class HTTP_Request
     {
         $uri = $this->uri;
 
+        /**
+         * Return a url for a domestic realm
+         *
+         * WordPress home/admin urls use the proper protocol by default,
+         * but this can be overriden with the --scheme=(http|https) option.
+         */
         switch ($this->args->realm) {
             case 'home':
                 return home_url($uri, $this->args->scheme);
@@ -158,11 +164,15 @@ abstract class HTTP_Request
                 return admin_url($uri, $this->args->scheme);
         }
 
-        if ( ! parse_url($uri, PHP_URL_SCHEME)) {
-            return "http://$uri";
+        if (! parse_url($uri, PHP_URL_SCHEME)) {
+            $uri = "http://$uri";
         }
 
-        return set_url_scheme($uri, $this->args->scheme);
+        /**
+         * If we've gotten this far, the url is for an foreign resource.
+         * The scheme will be determined by the source uri but possibly altered by user input.
+         */
+        return set_url_scheme($uri, $this->is_https() ? 'https' : 'http');
     }
 
     /**
@@ -172,11 +182,11 @@ abstract class HTTP_Request
      */
     protected function is_https()
     {
-        if ('https' === $this->args->scheme) {
-            return true;
+        if ($this->args->scheme) {
+            return 'https' == $this->args->scheme;
         }
 
-        return (bool)'https' === parse_url($this->uri, PHP_URL_SCHEME);
+        return 'https' == parse_url($this->uri, PHP_URL_SCHEME);
     }
 
     /**

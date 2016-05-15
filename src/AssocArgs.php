@@ -10,7 +10,7 @@ class AssocArgs
 
     protected $realm = 'external';
 
-    protected $scheme = 'http';
+    protected $scheme = null;
 
     protected $payload;
 
