@@ -196,7 +196,11 @@ abstract class HTTP_Request
      */
     protected function dispatch($url)
     {
-        return $this->http->request($url, $this->get_http_args());
+        $args = $this->get_http_args();
+
+        WP_CLI::debug(print_r(compact('url','args'), true));
+
+        return $this->http->request($url, $args);
     }
 
     /**
