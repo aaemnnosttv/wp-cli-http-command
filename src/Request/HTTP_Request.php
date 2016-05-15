@@ -266,13 +266,13 @@ abstract class HTTP_Request
     {
         $token    = '';
         $remember = '';
-        $secure   = $this->is_https();
+        $secure   = 'https' === parse_url($this->url(), PHP_URL_SCHEME);
         /** This filter is documented in wp-includes/pluggable.php */
         $expiration = time() + apply_filters('auth_cookie_expiration', 2 * DAY_IN_SECONDS, $user_id, $remember);
         $expire     = 0;
 
         // Frontend cookie is secure when the auth cookie is secure and the site's home URL is forced HTTPS.
-        $secure_logged_in_cookie = $secure && 'https' === parse_url(get_option('home'), PHP_URL_SCHEME);
+        $secure_logged_in_cookie = $secure;
 
         /**
          * Filter whether the connection is secure.
