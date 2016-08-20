@@ -27,6 +27,9 @@ class HTTP_Command extends \WP_CLI_Command
      * [--scheme=<scheme>]
      * : URL scheme to enforce
      *
+     * [--timeout=<seconds>]
+     * : HTTP request timeout, in seconds.  Default: 60
+     *
      * [--status]
      * : Only return the HTTP status code
      *
@@ -59,6 +62,9 @@ class HTTP_Command extends \WP_CLI_Command
      * [--scheme=<scheme>]
      * : URL scheme to enforce
      *
+     * [--timeout=<seconds>]
+     * : HTTP request timeout, in seconds.  Default: 60
+     *
      * [--status]
      * : Only return the HTTP status code
      *
@@ -90,6 +96,9 @@ class HTTP_Command extends \WP_CLI_Command
      *
      * [--scheme=<scheme>]
      * : URL scheme to enforce
+     *
+     * [--timeout=<seconds>]
+     * : HTTP request timeout, in seconds.  Default: 60
      *
      * [--status]
      * : Only return the HTTP status code

@@ -35,7 +35,6 @@ abstract class HTTP_Request
      */
     protected $defaults = [
         'redirection' => 0,
-        'timeout'     => 60,
     ];
 
     /**
@@ -214,6 +213,7 @@ abstract class HTTP_Request
         $args = [
             'method'    => static::METHOD,
             'sslverify' => $this->get_flag('ssl-verify', true),
+            'timeout'   => $this->args->timeout,
         ];
 
         if ($this->is_domestic_realm() && $this->args->as) {

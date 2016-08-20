@@ -14,6 +14,8 @@ class AssocArgs
 
     protected $payload;
 
+    protected $timeout = 60;
+
     public function __construct(array $args = [])
     {
         $this->args = $args;
