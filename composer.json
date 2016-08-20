@@ -8,6 +8,7 @@
             "homepage": "https://aaemnnost.tv"
         }
     ],
+    "license": "MIT",
     "autoload": {
         "psr-4": {"WP_HTTP_Command\\":"src"},
         "files": ["command.php"]
