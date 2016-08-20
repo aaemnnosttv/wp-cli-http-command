@@ -11,15 +11,15 @@ class HTTP_Command extends \WP_CLI_Command
 {
 
     /**
-     * Perform a HEAD request to the given URI
+     * Perform a HEAD request to the given URL
      *
      * ## OPTIONS
      *
-     * <uri>
-     * : The home/admin URI fragment or full URL if external
+     * <url>
+     * : The home/admin URL fragment or full URL if external
      *
      * [--realm=<home|admin>]
-     * : The realm the URI is targeting
+     * : The realm the URL is targeting
      *
      * [--as=<user>]
      * : the authenticated user to perform the request as (home and admin realms only)
@@ -43,15 +43,15 @@ class HTTP_Command extends \WP_CLI_Command
     }
 
     /**
-     * Perform a GET request to the given URI
+     * Perform a GET request to the given URL
      *
      * ## OPTIONS
      *
-     * <uri>
-     * : The home/admin URI fragment or full URL if external
+     * <url>
+     * : The home/admin URL fragment or full URL if external
      *
      * [--realm=<home|admin>]
-     * : The realm the URI is targeting
+     * : The realm the URL is targeting
      *
      * [--as=<user>]
      * : the authenticated user to perform the request as (home and admin realms only)
@@ -72,18 +72,18 @@ class HTTP_Command extends \WP_CLI_Command
     }
 
     /**
-     * Perform a POST request to the given URI
+     * Perform a POST request to the given URL
      *
      * ## OPTIONS
      *
-     * <uri>
-     * : The home/admin URI fragment or full URL if external
+     * <url>
+     * : The home/admin URL fragment or full URL if external
      *
      * [--payload=<data>]
      * : The data to send as the POST body
      *
      * [--realm=<home|admin>]
-     * : The realm the URI is targeting
+     * : The realm the URL is targeting
      *
      * [--as=<user>]
      * : the authenticated user to perform the request as (home and admin realms only)
