@@ -1,6 +1,7 @@
 {
     "name": "aaemnnosttv/wp-cli-http-command",
     "description": "WP-CLI command for using the WordPress HTTP API",
+    "type": "wp-cli-package",
     "require": {
         "php": "^5.5 | ^7.0"
     },
