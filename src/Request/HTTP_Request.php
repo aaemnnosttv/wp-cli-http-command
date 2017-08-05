@@ -111,7 +111,7 @@ abstract class HTTP_Request
      */
     protected function format_output(array $response)
     {
-        return @$response['body'];
+        return wp_remote_retrieve_body($response);
     }
 
     /**
@@ -121,8 +121,8 @@ abstract class HTTP_Request
      */
     protected function output_response_status(array $response)
     {
-        $http_code = $response['response']['code'];
-        $message   = $response['response']['message'];
+        $http_code = wp_remote_retrieve_response_code($response);
+        $message   = wp_remote_retrieve_response_message($response);
         $method    = 'line';
 
         if (500 <= $http_code) {
@@ -132,7 +132,7 @@ abstract class HTTP_Request
             $method = 'warning';
         }
         if (300 <= $http_code && $http_code < 400) {
-            $message .= "\n" . 'Location: ' . $response['headers']['location'];
+            $message .= "\n" . 'Location: ' . wp_remote_retrieve_header($response, 'location');
         }
         if (200 <= $http_code && $http_code < 300) {
             $method = 'success';
