@@ -38,6 +38,21 @@ abstract class HTTP_Request
     ];
 
     /**
+     * @var WP_HTTP
+     */
+    protected $http;
+
+    /**
+     * @var string
+     */
+    protected $uri;
+
+    /**
+     * @var AssocArgs
+     */
+    protected $args;
+
+    /**
      * HTTP_Request constructor.
      *
      * @param WP_HTTP   $http
@@ -50,7 +65,6 @@ abstract class HTTP_Request
         $this->uri  = $uri;
         $this->args = $args;
     }
-
 
     /**
      * @param       $method
