@@ -168,7 +168,7 @@ abstract class HTTP_Request
          * Return a url for a domestic realm
          *
          * WordPress home/admin urls use the proper protocol by default,
-         * but this can be overriden with the --scheme=(http|https) option.
+         * but this can be overridden with the --scheme=(http|https) option.
          */
         switch ($this->args->realm) {
             case 'home':
