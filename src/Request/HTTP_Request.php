@@ -175,11 +175,10 @@ abstract class HTTP_Request
          * WordPress home/admin urls use the proper protocol by default,
          * but this can be overridden with the --scheme=(http|https) option.
          */
-        switch ($this->args->realm) {
-            case 'home':
-                return home_url($uri, $this->args->scheme);
-            case 'admin':
-                return admin_url($uri, $this->args->scheme ?: 'admin');
+        if ('external' !== $realm) {
+            $args = array_filter([$uri, $this->args->scheme]);
+
+            return call_user_func_array("{$realm}_url", $args);
         }
 
         if (! parse_url($uri, PHP_URL_SCHEME)) {
