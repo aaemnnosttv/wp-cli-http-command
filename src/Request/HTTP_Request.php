@@ -245,7 +245,7 @@ abstract class HTTP_Request
      */
     protected function is_domestic_realm()
     {
-        return in_array($this->args->realm, ['home', 'admin']);
+        return in_array($this->args->realm, ['home', 'admin', 'rest']);
     }
 
     /**
