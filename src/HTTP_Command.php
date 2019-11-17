@@ -18,8 +18,16 @@ class HTTP_Command extends \WP_CLI_Command
      * <url>
      * : The home/admin URL fragment or full URL if external
      *
-     * [--realm=<home|admin>]
+     * [--realm=<realm>]
      * : The realm the URL is targeting
+     * ---
+     * default: external
+     * options:
+     *   - external
+     *   - home
+     *   - admin
+     *   - rest
+     * ---
      *
      * [--as=<user>]
      * : the authenticated user to perform the request as (home and admin realms only)
@@ -53,8 +61,16 @@ class HTTP_Command extends \WP_CLI_Command
      * <url>
      * : The home/admin URL fragment or full URL if external
      *
-     * [--realm=<home|admin>]
+     * [--realm=<realm>]
      * : The realm the URL is targeting
+     * ---
+     * default: external
+     * options:
+     *   - external
+     *   - home
+     *   - admin
+     *   - rest
+     * ---
      *
      * [--as=<user>]
      * : the authenticated user to perform the request as (home and admin realms only)
@@ -88,8 +104,16 @@ class HTTP_Command extends \WP_CLI_Command
      * [--payload=<data>]
      * : The data to send as the POST body
      *
-     * [--realm=<home|admin>]
+     * [--realm=<realm>]
      * : The realm the URL is targeting
+     * ---
+     * default: external
+     * options:
+     *   - external
+     *   - home
+     *   - admin
+     *   - rest
+     * ---
      *
      * [--as=<user>]
      * : the authenticated user to perform the request as (home and admin realms only)
