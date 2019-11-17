@@ -163,6 +163,11 @@ abstract class HTTP_Request
     protected function url()
     {
         $uri = $this->uri;
+        $realm = $this->args->realm;
+
+        if ('external' == $realm && ! parse_url($uri, PHP_URL_HOST)) {
+            $realm = 'home';
+        }
 
         /**
          * Return a url for a domestic realm
